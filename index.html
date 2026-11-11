@@ -310,6 +310,11 @@ input:focus,select:focus,textarea:focus{border-color:var(--terra);box-shadow:0 0
 .nm-img{height:220px;background-size:cover;background-position:center;position:relative}
 .nm-img .tm-x{position:absolute;top:14px;right:14px}
 @media (max-width:640px){.hero .deco{opacity:.22!important;transform:scale(.7)}}
+.dm-top{height:130px;display:grid;place-items:center;position:relative}
+.dm-top .tm-x{position:absolute;top:14px;right:14px}
+.dm-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px}
+.dm-chips span{background:#fff;border:1px solid var(--border);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:600}
+.nmodal .tm-body .tm-prev{margin-top:4px}
 .fine{font-size:13.5px!important;margin:12px 0 0!important}
 .checks{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:9px}
 .checks li{display:flex;gap:10px;align-items:flex-start;font-weight:600;font-size:15.5px}
@@ -487,7 +492,7 @@ footer small{opacity:.8}
     <div class="section-head">
       <div class="eyebrow">Nuestros favoritos</div>
       <h2>¿A dónde te llevamos?</h2>
-      <p>Toca uno y te llevamos directo a la cotización.</p>
+      <p>Toca uno para conocer sus rutas y lo más destacado.</p>
     </div>
     <div class="grid g3" id="favGrid"></div>
   </div>
@@ -1089,6 +1094,12 @@ footer small{opacity:.8}
   <svg width="32" height="32" viewBox="0 0 32 32" fill="#fff"><path d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.6a10.6 10.6 0 0 1-5.4-1.5l-.4-.2-3.9 1 1-3.8-.2-.4A10.6 10.6 0 1 1 16 26.6zm5.8-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.6 3.6 0 0 0-1.1 2.7 6.3 6.3 0 0 0 1.3 3.3 14.4 14.4 0 0 0 5.5 4.9c2 .9 2.8.9 3.9.8a3.2 3.2 0 0 0 2.1-1.5 2.6 2.6 0 0 0 .2-1.5c-.1-.1-.3-.2-.7-.4z"/></svg>
 </a>
 <div class="toast" id="toast"></div>
+<dialog class="tmodal nmodal" id="destModal" aria-labelledby="dmTitle">
+  <div class="dm-top" id="dmTop"><svg width="72" height="72" id="dmIco"><use href="#globe"/></svg><button type="button" class="tm-x" aria-label="Cerrar">×</button></div>
+  <div class="tm-head" style="background:none;padding-bottom:4px"><div><div class="eyebrow" id="dmTag"></div><h3 id="dmTitle"></h3></div></div>
+  <div class="tm-body" id="dmBody"></div>
+  <div class="tm-foot"><button type="button" class="btn btn-primary btn-sm" id="dmCta">Quiero cotizarlo ✶</button></div>
+</dialog>
 <dialog class="tmodal nmodal" id="newsModal" aria-labelledby="nmTitle">
   <div class="nm-img" id="nmImg"><button type="button" class="tm-x" aria-label="Cerrar">×</button></div>
   <div class="tm-head" style="background:none;padding-bottom:4px"><div><div class="eyebrow" id="nmTag"></div><h3 id="nmTitle"></h3></div></div>
@@ -1128,11 +1139,28 @@ const OFERTAS = [
 
 /* Favoritos */
 const FAVORITOS = [
-  { titulo:"Disney Cruise Line", texto:"La magia de Disney en altamar, para chicos y grandes.", icon:"ears", bg:"var(--pink)", c:"var(--terra)", preset:{tipo:["Disney Cruise Line"]} },
-  { titulo:"Parques Disney + Universal", texto:"Disney World, Disneyland y Universal, con estrategia de Lightning Lane.", icon:"castle", bg:"var(--gold-tint)", c:"#a77a2c", preset:{tipo:["Parques Disney + Universal"]} },
-  { titulo:"Cruceros", texto:"Royal Caribbean, Celebrity, Virgin y más, en familia, en pareja o con amigos.", icon:"ship", bg:"var(--sage)", c:"var(--brown)", preset:{tipo:["Crucero"]} },
-  { titulo:"Playas en México", texto:"Todo incluido, solo adultos o familiar, en el Caribe o el Pacífico.", icon:"beach", bg:"var(--sage-tint)", c:"#4b6a67", preset:{tipo:["Playas en México"]} },
-  { titulo:"Otros destinos", texto:"Europa, Asia, ciudades o la ruta que sueñes.", icon:"globe", bg:"var(--terra-tint)", c:"var(--terra)", preset:{tipo:["Otro destino"]} }
+  { titulo:"Disney Cruise Line", texto:"La magia de Disney en altamar, para chicos y grandes.", icon:"ears", bg:"var(--pink)", c:"var(--terra)", preset:{tipo:["Disney Cruise Line"]},
+    eyebrow:"Cruceros Disney", desc:"Cruceros llenos de magia, con personajes, shows tipo Broadway y un servicio que consiente a toda la familia. Hay barcos y actividades para cada edad, y también espacios solo para adultos.",
+    rutasTitulo:"Rutas", rutas:["Bahamas","Caribe","Alaska","Riviera Mexicana y Baja California","Europa","Hawái y Pacífico","Transatlánticos"],
+    extraTitulo:"Barcos", extra:["Disney Magic","Disney Wonder","Disney Dream","Disney Fantasy","Disney Wish","Disney Treasure","Disney Destiny","Disney Adventure"],
+    destacados:["Islas privadas de Disney en Bahamas: Castaway Cay y Lookout Cay","Cada noche cenas en un restaurante temático distinto y tus meseros te acompañan","Clubes para niños por edad, incluidos en tu crucero","Encuentros con personajes, shows y fiestas temáticas en altamar","Albercas, toboganes y áreas exclusivas para adultos"] },
+  { titulo:"Parques Disney + Universal", texto:"Disney World, Disneyland y Universal, con estrategia de Lightning Lane.", icon:"castle", bg:"var(--gold-tint)", c:"#a77a2c", preset:{tipo:["Parques Disney + Universal"]},
+    eyebrow:"Parques temáticos", desc:"Planeamos tus días de parque con estrategia: qué parque visitar cada día, cómo aprovechar las filas rápidas y dónde comer, para que lo disfruten sin correr.",
+    rutasTitulo:"Parques", rutas:["Walt Disney World, Orlando: Magic Kingdom, EPCOT, Hollywood Studios y Animal Kingdom","Disneyland Resort, California: Disneyland Park y California Adventure","Universal Orlando: Universal Studios, Islands of Adventure y Epic Universe","Universal Studios Hollywood"],
+    destacados:["Estrategia de Lightning Lane para hacer menos filas","Hoteles de Disney y de Universal, o vecinos caminando a los parques","Itinerario día por día según las edades de quienes viajan","Acompañamiento Instante, hasta nuestro Acompañamiento VIP","Agentes certificadas y con experiencia trabajando dentro de Disney"] },
+  { titulo:"Cruceros", texto:"Royal Caribbean, Celebrity, Virgin y más, en familia, en pareja o con amigos.", icon:"ship", bg:"var(--sage)", c:"var(--brown)", preset:{tipo:["Crucero"]},
+    eyebrow:"Cruceros", desc:"Conoce varios destinos en un solo viaje, con hospedaje, comidas y entretenimiento en un mismo lugar. Hay cruceros para familias, para parejas y solo para adultos.",
+    rutasTitulo:"Rutas", rutas:["Bahamas","Caribe Oriental, Occidental y Sur","Riviera Mexicana","Mediterráneo","Norte de Europa y Escandinavia","Alaska"],
+    extraTitulo:"Navieras", extra:["Royal Caribbean","Norwegian","Celebrity","Virgin Voyages","MSC","Carnival","Princess","Oceania"],
+    destacados:["Desempacas una sola vez y visitas varios países","Barcos con parques acuáticos, shows y restaurantes de especialidad","Opciones solo para adultos, como Virgin Voyages","Islas privadas, como Perfect Day at CocoCay de Royal Caribbean","Te ayudamos con tu check-in, excursiones y reservaciones a bordo"] },
+  { titulo:"Playas en México", texto:"Todo incluido, solo adultos o familiar, en el Caribe o el Pacífico.", icon:"beach", bg:"var(--sage-tint)", c:"#4b6a67", preset:{tipo:["Playas en México"]},
+    eyebrow:"Playas de México", desc:"Escapadas de playa sin complicaciones, cerca de casa. Te ayudamos a elegir el destino y el hotel ideal según lo que buscas: descansar, celebrar o viajar con niños.",
+    rutasTitulo:"Destinos", rutas:["Cancún","Riviera Maya y Tulum","Los Cabos","Puerto Vallarta y Riviera Nayarit","Huatulco","Mazatlán"],
+    destacados:["Hoteles todo incluido para no preocuparte por nada","Opciones solo para adultos, ideales para parejas","Hoteles familiares con club de niños y parques acuáticos","Paquetes con vuelo, hotel y traslados","Perfectos para fines de semana largos y celebraciones"] },
+  { titulo:"Otros destinos", texto:"Europa, Asia, ciudades o la ruta que sueñes.", icon:"globe", bg:"var(--terra-tint)", c:"var(--terra)", preset:{tipo:["Otro destino"]},
+    eyebrow:"El mundo", desc:"Diseñamos viajes a la medida: uno o varios destinos, con la ruta, los hoteles y las experiencias que vayan contigo.",
+    rutasTitulo:"Ideas para inspirarte", rutas:["Italia, Grecia, España y Croacia","Francia y Suiza","Japón, Tailandia y Bali","Nueva York y Las Vegas","Perú y Sudamérica"],
+    destacados:["Rutas por varias ciudades o países, como tú las imagines","Combina tu viaje con un crucero","Hoteles, trenes, traslados y tours en un solo plan","Te acompañamos antes y durante tu viaje"] }
 ];
 
 const BUDGETS = {
@@ -1173,7 +1201,7 @@ $("#dealsGrid").innerHTML = OFERTAS.map((o,i)=>`
 $("#favGrid").innerHTML = FAVORITOS.map((f,i)=>`
   <button type="button" class="card fav" data-fav="${i}">
     <span class="ico" style="background:${f.bg}"><svg width="32" height="32" style="color:${f.c}"><use href="#${f.icon}"/></svg></span>
-    <h3>${f.titulo}</h3><p>${f.texto}</p><span class="go">Cotizar →</span>
+    <h3>${f.titulo}</h3><p>${f.texto}</p><span class="go">Ver más ›</span>
   </button>`).join("");
 
 function applyPreset(p, label){
@@ -1195,7 +1223,7 @@ function applyPreset(p, label){
 }
 document.addEventListener("click",e=>{
   const d=e.target.closest("[data-deal]"); if(d){const o=OFERTAS[d.dataset.deal]; applyPreset(o.preset,o.titulo); const c=form.elements.comentarios; c.value=(c.value?c.value+"\n":"")+`Me interesa la oferta: ${o.titulo}${o.fechas?" ("+o.fechas+")":""}`;}
-  const f=e.target.closest("[data-fav]"); if(f){const o=FAVORITOS[f.dataset.fav]; applyPreset(o.preset,o.titulo);}
+  const f=e.target.closest("[data-fav]"); if(f) abrirDestino(+f.dataset.fav);
 });
 
 /* Lo más nuevo — edita, agrega o quita */
@@ -1239,6 +1267,27 @@ $("#newGrid").innerHTML = NOVEDADES.map((n,i)=>`
   dlg.querySelector(".tm-x").addEventListener("click",close);
   dlg.addEventListener("click",e=>{ if(e.target===dlg) close(); });
   $("#nmCta").addEventListener("click",()=>{ close(); if(cur) applyPreset(cur.preset,cur.titulo); const c=form.elements.comentarios; if(c&&cur) c.value=(c.value?c.value+"\n":"")+`Me interesa: ${cur.titulo}`; });
+})();
+
+/* --- Destinos: ventana con información --- */
+let destActual=null;
+function abrirDestino(i){
+  const d=FAVORITOS[i], dlg=$("#destModal"); destActual=d;
+  $("#dmTop").style.background=d.bg; const ico=$("#dmIco"); ico.style.color=d.c; ico.innerHTML=`<use href="#${d.icon}"/>`;
+  $("#dmTag").textContent=d.eyebrow||""; $("#dmTitle").textContent=d.titulo;
+  const chips=a=>`<div class="dm-chips">${a.map(x=>`<span>${x}</span>`).join("")}</div>`;
+  $("#dmBody").innerHTML=`<p class="tm-desc">${d.desc}</p>`
+    +`<p class="tm-prev">${d.rutasTitulo}</p>`+chips(d.rutas)
+    +(d.extra?`<p class="tm-prev">${d.extraTitulo}</p>`+chips(d.extra):"")
+    +`<p class="tm-prev">Lo más destacado</p><ul class="checks">${d.destacados.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+  dlg.showModal ? dlg.showModal() : dlg.setAttribute("open","");
+  dlg.scrollTop=0;
+}
+(function(){
+  const dlg=$("#destModal"); const close=()=>{ dlg.close ? dlg.close() : dlg.removeAttribute("open"); };
+  dlg.querySelector(".tm-x").addEventListener("click",close);
+  dlg.addEventListener("click",e=>{ if(e.target===dlg) close(); });
+  $("#dmCta").addEventListener("click",()=>{ close(); if(destActual) applyPreset(destActual.preset,destActual.titulo); });
 })();
 
 /* --- Acompañamiento Disney: ventana con lo que incluye --- */
