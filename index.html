@@ -322,6 +322,11 @@ input:focus,select:focus,textarea:focus{border-color:var(--terra);box-shadow:0 0
 .flow{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:18px 0 0}
 .flow span{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:7px 14px 7px 7px;font-weight:700;font-size:14.5px}
 .flow b{width:26px;height:26px;border-radius:50%;background:var(--terra);color:#fff;display:grid;place-items:center;font-size:13px}
+.agenda{margin:18px 16px 18px;padding:22px 16px 6px;border-top:1px dashed var(--border);text-align:center}
+.agenda h4{font-size:clamp(22px,3vw,28px);font-weight:900;color:var(--terra);margin:6px 0 6px}
+.agenda > p{max-width:560px;margin:0 auto 16px;color:var(--muted)}
+.agenda .calendly-box{margin:0 0 12px;border:1px solid var(--border)}
+.ok-msg{font-weight:800;color:var(--terra)!important}
 .xchip{display:contents}
 .reveal{animation:reveal .35s ease}
 @keyframes reveal{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
@@ -1009,39 +1014,36 @@ footer small{opacity:.8}
         <textarea id="notas" name="comentarios" placeholder="Sueños, dudas, necesidades especiales, alergias, movilidad, un barco o fecha que viste…"></textarea>
       </div>
 
-      <!-- ÚLTIMO PASO: JUNTA -->
+      <!-- ÚLTIMO PASO: ENVIAR -->
       <div class="card submit-box" id="finalBox">
         <div class="eyebrow">Último paso</div>
-        <h3 style="font-size:clamp(26px,3.6vw,34px);font-weight:900;color:var(--terra);margin:8px 0 10px">Agenda tu junta</h3>
-        <p style="max-width:560px;margin:0 auto 20px">En la junta te presentamos tu cotización y la platicamos juntas. Después te la mandamos por WhatsApp para que la tengas siempre a la mano.</p>
-        <button type="button" class="btn btn-primary" id="agendarBtn">Agendar mi junta ✶</button>
+        <h3 style="font-size:clamp(26px,3.6vw,34px);font-weight:900;color:var(--terra);margin:8px 0 10px">Envía tu solicitud</h3>
+        <p style="max-width:560px;margin:0 auto 20px">Nos llega directo y empezamos a preparar tu cotización. Después podrás agendar una junta para presentártela y platicarla juntas.</p>
+        <button type="button" class="btn btn-primary" id="sendBtn">Enviar cotización ✶</button>
         <div class="err hidden" id="formErr2" style="margin-top:14px"></div>
-
-        <div id="calStep" class="hidden" style="margin-top:22px">
-          <div class="calendly-box" id="calendlyBox"></div>
-          <div id="calFallback" class="hidden" style="padding:6px 0 18px">
-            <a class="btn btn-ghost btn-sm" id="calNewTab" target="_blank" rel="noopener">Abrir calendario para agendar</a>
-            <label class="check" style="justify-content:center"><input type="checkbox" id="yaAgende"> Ya agendé mi junta</label>
-          </div>
-          <p id="juntaOk" class="hidden" style="font-weight:800;color:var(--terra);margin:6px 0 14px">✓ ¡Tu junta quedó agendada!</p>
-          <button type="button" class="btn btn-primary" id="sendBtn" disabled>Enviar mi solicitud ✶</button>
-          <p class="sub" id="sendHint" style="margin:10px 0 0">Agenda tu junta en el calendario para poder enviar tu solicitud.</p>
-        </div>
-
-        <div class="or"><span>o</span></div>
-        <button type="button" class="btn btn-ghost btn-sm" id="waBtn">No quiero junta, mándenme la cotización por WhatsApp</button>
       </div>
     </form>
 
-    <!-- GRACIAS -->
+    <!-- GRACIAS + AGENDAR JUNTA -->
     <div id="exito" class="card hidden" tabindex="-1">
       <div class="head">
         <svg class="star" width="56" height="56" style="color:var(--mustard);margin:0 auto"><use href="#star"/></svg>
         <h3 id="exitoTitulo">¡Recibimos tu solicitud!</h3>
-        <p id="exitoTexto" style="margin:0 auto;max-width:560px"></p>
+        <p id="exitoTexto" style="margin:0 auto;max-width:560px">Ya nos llegó y empezamos a preparar tu cotización.</p>
       </div>
-      <div style="text-align:center;padding:10px 20px 32px">
-        <a class="btn btn-ghost btn-sm" id="waSummary" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+      <div class="agenda">
+        <div class="eyebrow">Siguiente paso</div>
+        <h4>Agenda tu junta</h4>
+        <p>Elige el día y la hora para presentarte tu cotización y platicarla juntas. Después te la mandamos por WhatsApp.</p>
+        <p id="juntaOk" class="hidden ok-msg">✓ ¡Tu junta quedó agendada! Te esperamos.</p>
+        <div class="calendly-box" id="calendlyBox"></div>
+        <div id="calFallback" class="hidden" style="padding:6px 0 10px;text-align:center">
+          <a class="btn btn-primary" id="calNewTab" target="_blank" rel="noopener">Agendar mi junta ✶</a>
+        </div>
+      </div>
+      <div style="text-align:center;padding:4px 20px 32px">
+        <p class="sub" style="margin:0 0 10px">¿Prefieres escribirnos? Mándanos también tu solicitud por WhatsApp.</p>
+        <a class="btn btn-ghost btn-sm" id="waSummary" target="_blank" rel="noopener">Enviar por WhatsApp</a>
       </div>
     </div>
   </div>
@@ -1409,68 +1411,43 @@ function validar(){
   return true;
 }
 
-/* --- Paso final: junta o WhatsApp --- */
-let juntaAgendada=false, calAbierto=false, enviando=false;
-function setJunta(ok){
-  juntaAgendada=ok;
-  $("#sendBtn").disabled=!ok;
-  $("#juntaOk").classList.toggle("hidden",!ok);
-  $("#sendHint").classList.toggle("hidden",ok);
-  if(ok) $("#sendBtn").scrollIntoView({behavior:"smooth",block:"center"});
-}
-$("#agendarBtn").addEventListener("click",()=>{
-  if(!validar()) return;
-  const data=collect();
-  const resumen=summary(data,true).slice(0,9000);
-  const params=new URLSearchParams({name:data.nombre||"",email:data.correo||"",a1:resumen});
-  const calUrl=CONFIG.CALENDLY_URL+(CONFIG.CALENDLY_URL.includes("?")?"&":"?")+params.toString();
-  $("#calNewTab").href=calUrl;
-  $("#calStep").classList.remove("hidden");
-  $("#agendarBtn").classList.add("hidden");
-  if(!calAbierto){
-    calAbierto=true;
-    const box=$("#calendlyBox");
-    const fallback=()=>{box.classList.add("hidden");$("#calFallback").classList.remove("hidden");};
-    const init=()=>{try{Calendly.initInlineWidget({url:CONFIG.CALENDLY_URL,parentElement:box,prefill:{name:data.nombre||"",email:data.correo||"",customAnswers:{a1:resumen}}})}catch(_){fallback()}};
-    if(window.Calendly) init();
-    else { const iv=setInterval(()=>{if(window.Calendly){clearInterval(iv);init()}},200); setTimeout(()=>{clearInterval(iv);if(!window.Calendly)fallback()},5000); }
-  }
-  $("#calStep").scrollIntoView({behavior:"smooth",block:"start"});
-});
-// Calendly avisa cuando la persona agenda
-window.addEventListener("message",e=>{
-  if(typeof e.data==="object" && e.data && e.data.event==="calendly.event_scheduled") setJunta(true);
-});
-$("#yaAgende").addEventListener("change",e=>setJunta(e.target.checked));
-
-$("#sendBtn").addEventListener("click",()=>{ if(juntaAgendada) enviar("junta"); });
-$("#waBtn").addEventListener("click",()=>{ if(validar()) enviar("whatsapp"); });
+/* --- Paso final: enviar cotización y luego agendar junta --- */
+let enviando=false;
+$("#sendBtn").addEventListener("click",()=>{ if(validar()) enviar(); });
 form.addEventListener("submit",e=>e.preventDefault());
 
-async function enviar(modo){
+async function enviar(){
   if(enviando) return; enviando=true;
-  const btn = modo==="junta" ? $("#sendBtn") : $("#waBtn");
-  btn.disabled=true; btn.textContent="Enviando…";
+  const btn=$("#sendBtn"); btn.disabled=true; btn.textContent="Enviando…";
   const data=collect();
-  data.modo = modo==="junta" ? "Junta agendada en Calendly; después enviar por WhatsApp" : "SIN junta — mandar la cotización por WhatsApp";
   const envio=fetch("https://formsubmit.co/ajax/"+CONFIG.EMAIL_DESTINO,{
     method:"POST",keepalive:true,headers:{"Content-Type":"application/json",Accept:"application/json"},
-    body:JSON.stringify({_subject:`✶ Nueva solicitud de cotización – ${data.nombre}${modo==="whatsapp"?" (por WhatsApp)":" (con junta)"}`,_template:"table",_captcha:"false",...Object.fromEntries(Object.entries(data).map(([k,v])=>[LABELS[k]||k,v]))})
+    body:JSON.stringify({_subject:`✶ Nueva solicitud de cotización – ${data.nombre}`,_template:"table",_captcha:"false",...Object.fromEntries(Object.entries(data).map(([k,v])=>[LABELS[k]||k,v]))})
   }).catch(()=>{});
   await Promise.race([envio,new Promise(r=>setTimeout(r,4000))]);
-  gracias(modo,data);
+  gracias(data);
 }
-function gracias(modo,data){
+function gracias(data){
   form.classList.add("hidden");
   const ex=$("#exito"); ex.classList.remove("hidden");
   const first=(data.nombre||"").split(" ")[0];
-  $("#exitoTitulo").textContent=`¡Gracias, ${first}!`;
-  $("#exitoTexto").textContent = modo==="junta"
-    ? "Recibimos tu solicitud y tu junta ya está agendada. Ahí te presentamos tu cotización y la platicamos juntas; después te la mandamos por WhatsApp."
-    : "Recibimos tu solicitud. Te mandaremos tu cotización por WhatsApp muy pronto. Si te surge cualquier duda, escríbenos.";
+  $("#exitoTitulo").textContent=`¡Gracias, ${first}! Recibimos tu solicitud`;
   $("#waSummary").href=`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(`Hola Instante ✶ Acabo de pedir una cotización:\n\n${summary(data,false)}`)}`;
+  // Calendly con datos ya llenos
+  const resumen=summary(data,true).slice(0,9000);
+  const params=new URLSearchParams({name:data.nombre||"",email:data.correo||"",a1:resumen});
+  $("#calNewTab").href=CONFIG.CALENDLY_URL+(CONFIG.CALENDLY_URL.includes("?")?"&":"?")+params.toString();
+  const box=$("#calendlyBox");
+  const fallback=()=>{box.classList.add("hidden");$("#calFallback").classList.remove("hidden");};
+  const init=()=>{try{Calendly.initInlineWidget({url:CONFIG.CALENDLY_URL,parentElement:box,prefill:{name:data.nombre||"",email:data.correo||"",customAnswers:{a1:resumen}}})}catch(_){fallback()}};
+  if(window.Calendly) init();
+  else { const iv=setInterval(()=>{if(window.Calendly){clearInterval(iv);init()}},200); setTimeout(()=>{clearInterval(iv);if(!window.Calendly)fallback()},5000); }
   ex.scrollIntoView({behavior:"smooth",block:"start"}); ex.focus({preventScroll:true});
 }
+// Calendly avisa cuando la persona agenda
+window.addEventListener("message",e=>{
+  if(typeof e.data==="object" && e.data && e.data.event==="calendly.event_scheduled") $("#juntaOk").classList.remove("hidden");
+});
 
 /* --- Menús desplegables --- */
 function setupDropdowns(){
