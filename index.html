@@ -330,7 +330,10 @@ input:focus,select:focus,textarea:focus{border-color:var(--terra);box-shadow:0 0
 .agenda{margin:18px 16px 18px;padding:22px 16px 6px;border-top:1px dashed var(--border);text-align:center}
 .agenda h4{font-size:clamp(22px,3vw,28px);font-weight:900;color:var(--terra);margin:6px 0 6px}
 .agenda > p{max-width:560px;margin:0 auto 16px;color:var(--muted)}
-.agenda .calendly-box{margin:0 0 12px;border:1px solid var(--border)}
+.agenda .calendly-box{margin:0 auto 12px;border:1px solid var(--border);height:720px;min-height:0;max-width:720px}
+.agenda .calendly-box iframe{width:100%!important;height:100%!important;border:0;display:block}
+@media (max-width:640px){.agenda .calendly-box{height:780px}}
+#exito:focus{outline:none}
 .ok-msg{font-weight:800;color:var(--terra)!important}
 .xchip{display:contents}
 .reveal{animation:reveal .35s ease}
@@ -1488,7 +1491,7 @@ function gracias(data){
   $("#calNewTab").href=CONFIG.CALENDLY_URL+(CONFIG.CALENDLY_URL.includes("?")?"&":"?")+params.toString();
   const box=$("#calendlyBox");
   const fallback=()=>{box.classList.add("hidden");$("#calFallback").classList.remove("hidden");};
-  const init=()=>{try{Calendly.initInlineWidget({url:CONFIG.CALENDLY_URL,parentElement:box,prefill:{name:data.nombre||"",email:data.correo||"",customAnswers:{a1:resumen}}})}catch(_){fallback()}};
+  const init=()=>{try{Calendly.initInlineWidget({url:CONFIG.CALENDLY_URL+(CONFIG.CALENDLY_URL.includes("?")?"&":"?")+"hide_event_type_details=1&hide_gdpr_banner=1&primary_color=9c4a32",parentElement:box,prefill:{name:data.nombre||"",email:data.correo||"",customAnswers:{a1:resumen}}})}catch(_){fallback()}};
   if(window.Calendly) init();
   else { const iv=setInterval(()=>{if(window.Calendly){clearInterval(iv);init()}},200); setTimeout(()=>{clearInterval(iv);if(!window.Calendly)fallback()},5000); }
   ex.scrollIntoView({behavior:"smooth",block:"start"}); ex.focus({preventScroll:true});
