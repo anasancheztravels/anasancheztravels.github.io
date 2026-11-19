@@ -633,15 +633,6 @@ footer small{opacity:.8}
             <input type="text" id="ciudad" name="ciudad_residencia" autocomplete="address-level2" placeholder="Ej. Monterrey, N.L.">
           </div>
         </div>
-        <div class="row" style="grid-template-columns:1fr">
-          <div>
-            <label class="lbl" for="conocio">¿Cómo nos conociste?</label>
-            <select id="conocio" name="como_nos_conocio">
-              <option value="">—</option>
-              <option>Me recomendó alguien</option><option>Instagram</option><option>Facebook</option><option>TikTok</option><option>Ya he viajado con ustedes</option><option>Otro</option>
-            </select>
-          </div>
-        </div>
         <p class="sub" style="margin:0">* Necesitamos tu nombre y tu WhatsApp para mandarte tu cotización.</p>
         <div class="err hidden" id="formErr"></div>
       </div>
@@ -731,18 +722,6 @@ footer small{opacity:.8}
             <input type="checkbox" name="dcl_cabina" value="Concierge" id="dc4"><label for="dc4">Concierge</label>
             <input type="checkbox" name="dcl_cabina" value="Cabinas conectadas" id="dc5"><label for="dc5">Conectadas</label>
             <input type="checkbox" name="dcl_cabina" value="No sé, quiero opciones" id="dc6"><label for="dc6">No sé, quiero opciones</label>
-          </div>
-        </div>
-        <div class="subblock">
-          <h4>✶ ¿Qué más incluimos?</h4>
-          <div class="pick" data-dd="Elige lo que quieras agregar">
-            <input type="checkbox" name="dcl_extras" value="Hotel antes/después del crucero" id="dx1"><label for="dx1">Hotel antes/después del crucero</label>
-            <input type="checkbox" name="dcl_extras" value="Días en Disney World antes o después" id="dx2"><label for="dx2">Días en Disney World</label>
-            <input type="checkbox" name="dcl_extras" value="Traslados" id="dx3"><label for="dx3">Traslados</label>
-            <input type="checkbox" name="dcl_extras" value="Seguro de viaje" id="dx4"><label for="dx4">Seguro de viaje</label>
-            <input type="checkbox" name="dcl_extras" value="Excursiones (Port Adventures)" id="dx5"><label for="dx5">Excursiones</label>
-            <input type="checkbox" name="dcl_extras" value="Wi-Fi a bordo" id="dx6"><label for="dx6">Wi-Fi a bordo</label>
-            <input type="checkbox" name="dcl_extras" value="Cena en restaurante de adultos (Palo / Enchanté)" id="dx7"><label for="dx7">Restaurante de adultos</label>
           </div>
         </div>
       </div>
@@ -864,18 +843,6 @@ footer small{opacity:.8}
             <input type="checkbox" name="cru_cabina" value="No sé, quiero opciones" id="cc6"><label for="cc6">No sé, quiero opciones</label>
           </div>
         </div>
-        <div class="subblock">
-          <h4>✶ ¿Qué más incluimos?</h4>
-          <div class="pick" data-dd="Elige lo que quieras agregar">
-            <input type="checkbox" name="cru_extras" value="Hotel antes/después del crucero" id="cx1"><label for="cx1">Hotel antes/después del crucero</label>
-            <input type="checkbox" name="cru_extras" value="Traslados" id="cx2"><label for="cx2">Traslados</label>
-            <input type="checkbox" name="cru_extras" value="Seguro de viaje" id="cx3"><label for="cx3">Seguro de viaje</label>
-            <input type="checkbox" name="cru_extras" value="Excursiones" id="cx4"><label for="cx4">Excursiones</label>
-            <input type="checkbox" name="cru_extras" value="Paquete de bebidas" id="cx5"><label for="cx5">Paquete de bebidas</label>
-            <input type="checkbox" name="cru_extras" value="Internet a bordo" id="cx6"><label for="cx6">Internet</label>
-            <input type="checkbox" name="cru_extras" value="Restaurantes de especialidad" id="cx7"><label for="cx7">Restaurantes de especialidad</label>
-          </div>
-        </div>
       </div>
 
       <!-- PLAYAS EN MÉXICO -->
@@ -950,18 +917,6 @@ footer small{opacity:.8}
           <span class="lbl">Edad de los niños al viajar <span class="sub">(nos ayuda con tarifas y actividades)</span></span>
           <div class="ages" id="ages"></div>
         </div>
-        <div class="field">
-          <span class="lbl">¿Viajan por algo especial?</span>
-          <div class="pick" data-dd="Elige una o varias (opcional)">
-            <input type="checkbox" name="ocasion" value="Cumpleaños" id="o1"><label for="o1">Cumpleaños</label>
-            <input type="checkbox" name="ocasion" value="Aniversario" id="o2"><label for="o2">Aniversario</label>
-            <input type="checkbox" name="ocasion" value="Luna de miel" id="o3"><label for="o3">Luna de miel</label>
-            <input type="checkbox" name="ocasion" value="Graduación" id="o4"><label for="o4">Graduación</label>
-            <input type="checkbox" name="ocasion" value="Viaje familiar" id="o5"><label for="o5">Viaje familiar</label>
-            <input type="checkbox" name="ocasion" value="Escapada en pareja" id="o6"><label for="o6">Escapada en pareja</label>
-            <input type="checkbox" name="ocasion" value="Viaje con amigas/os" id="o7"><label for="o7">Con amig@s</label>
-          </div>
-        </div>
       </div>
 
       <!-- FECHAS -->
@@ -984,24 +939,6 @@ footer small{opacity:.8}
               <button type="button" class="linkbtn" id="calClear">Borrar fechas</button>
             </div>
           </div>
-          <div class="row" style="margin-top:16px;margin-bottom:0;grid-template-columns:1fr">
-            <div>
-              <label class="lbl" for="periodo">Temporada <span class="sub">(si aplica)</span></label>
-              <select id="periodo" name="temporada">
-                <option value="">—</option>
-                <option>Vacaciones de verano</option>
-                <option>Semana Santa</option>
-                <option>Navidad / Año nuevo</option>
-                <option>Puente o fin de semana largo</option>
-                <option>Temporada baja (más barato)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <label class="check"><input type="checkbox" id="sinFechas" name="sin_fechas" value="Aún no tengo fechas"> Aún no tengo fechas, solo una idea del mes</label>
-        <div id="mesesWrap" class="hidden field" style="margin-top:14px">
-          <span class="lbl">¿En qué meses te gustaría?</span>
-          <div class="pick" id="meses" data-dd="Elige uno o varios meses"></div>
         </div>
       </div>
 
@@ -1213,7 +1150,7 @@ function applyPreset(p, label){
   updateSections();
   Object.entries(p).forEach(([name,val])=>{
     if(name==="tipo") return;
-    if(name==="fechas"){ const [a,b]=val.map(x=>{const [y,m,d]=x.split("-").map(Number);return new Date(y,m-1,d)}); selStart=a; selEnd=b; view=new Date(a.getFullYear(),a.getMonth(),1); const sf=$("#sinFechas"); if(sf.checked){sf.checked=false;sf.dispatchEvent(new Event("change"))} drawCal(); return; }
+    if(name==="fechas"){ const [a,b]=val.map(x=>{const [y,m,d]=x.split("-").map(Number);return new Date(y,m-1,d)}); selStart=a; selEnd=b; view=new Date(a.getFullYear(),a.getMonth(),1); drawCal(); return; }
     if(Array.isArray(val)){
       val.forEach(v=>{const el=$$(`input[name="${name}"]`).find(x=>x.value===v); if(el) el.checked=true;});
     } else {
@@ -1409,8 +1346,6 @@ $("#calNext").onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1)
 $("#calClear").onclick=()=>{selStart=selEnd=null;drawCal()};
 drawCal();
 
-(function(){let h="";for(let i=0;i<15;i++){const d=new Date(today.getFullYear(),today.getMonth()+i,1);const v=`${MES[d.getMonth()]} ${d.getFullYear()}`;h+=`<input type="checkbox" name="meses_interes" value="${v}" id="mes${i}"><label for="mes${i}" style="text-transform:capitalize">${MES[d.getMonth()].slice(0,3)} ${String(d.getFullYear()).slice(2)}</label>`}$("#meses").innerHTML=h})();
-$("#sinFechas").addEventListener("change",e=>{$("#mesesWrap").classList.toggle("hidden",!e.target.checked);$("#calArea").style.opacity=e.target.checked?.45:1;$("#calArea").style.pointerEvents=e.target.checked?"none":""});
 
 /* --- Presupuesto --- */
 function renderBudget(){
@@ -1426,8 +1361,7 @@ function collect(){
   for(const [k,v] of fd.entries()){ if(!String(v).trim())continue; data[k]=data[k]?data[k]+", "+v:v; }
   // quitar lo que está en secciones ocultas
   $$(".tsec.hidden").forEach(sec=>sec.querySelectorAll("[name]").forEach(el=>delete data[el.name]));
-  if($("#sinFechas").checked){ delete data.flexibilidad; }
-  else if(selStart){ data.fecha_salida=fmt(selStart); if(selEnd){data.fecha_regreso=fmt(selEnd); data.noches_seleccionadas=Math.round((selEnd-selStart)/864e5)} }
+  if(selStart){ data.fecha_salida=fmt(selStart); if(selEnd){data.fecha_regreso=fmt(selEnd); data.noches_seleccionadas=Math.round((selEnd-selStart)/864e5)} }
   else { delete data.flexibilidad; }
   const ek=Object.keys(data).filter(k=>k.startsWith("edad_nino_"));
   const edades=ek.map(k=>data[k]); ek.forEach(k=>delete data[k]);
