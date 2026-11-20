@@ -945,9 +945,12 @@ footer small{opacity:.8}
       <!-- PRESUPUESTO -->
       <div class="card block">
         <div class="block-head"><span class="num">5</span><h3>Tu presupuesto</h3><span class="opt">total del viaje</span></div>
-        <input type="hidden" id="moneda" name="moneda" value="USD">
-        <label class="lbl" for="presupuesto">¿Cuánto te gustaría invertir en tu viaje? <span class="sub">(total en dólares, para todos los que viajan)</span></label>
-        <input type="text" id="presupuesto" name="presupuesto" inputmode="text" placeholder="Ej. $5,000 USD, o “aún no lo sé”">
+        <label class="lbl" for="presupuesto">¿Cuánto te gustaría invertir en tu viaje? <span class="sub">(total para todos los que viajan, sin incluir vuelos)</span></label>
+        <div class="pick" style="margin:6px 0 12px" role="radiogroup" aria-label="Moneda">
+          <input type="radio" name="moneda" value="MXN" id="monMXN" checked><label for="monMXN">Pesos (MXN)</label>
+          <input type="radio" name="moneda" value="USD" id="monUSD"><label for="monUSD">Dólares (USD)</label>
+        </div>
+        <input type="text" id="presupuesto" name="presupuesto" placeholder="Ej. $80,000, o “aún no lo sé”">
         <p class="sub" style="margin:10px 0 0">Es solo para darte opciones que te hagan sentido. Nunca te vamos a presionar.</p>
       </div>
 
@@ -1346,6 +1349,9 @@ drawCal();
 
 
 
+/* --- Presupuesto: moneda --- */
+$$('input[name="moneda"]').forEach(r=>r.addEventListener("change",()=>{$("#presupuesto").placeholder=r.value==="USD"?"Ej. $5,000, o “aún no lo sé”":"Ej. $80,000, o “aún no lo sé”"}));
+
 /* --- Resumen --- */
 function collect(){
   const fd=new FormData(form), data={};
@@ -1358,7 +1364,9 @@ function collect(){
   const edades=ek.map(k=>data[k]); ek.forEach(k=>delete data[k]);
   if(edades.length) data.edades_ninos=edades.join(", ");
   if(data.ninos==="0") delete data.ninos; if(data.mayores_65==="0") delete data.mayores_65;
-  if(data.presupuesto && data.presupuesto.trim()) data.presupuesto=data.presupuesto.trim()+" (total del viaje)"; else { delete data.presupuesto; delete data.moneda; }
+  if(data.presupuesto && data.presupuesto.trim()){ const t=data.presupuesto.trim(); data.presupuesto=(/\d/.test(t)&&!/(usd|mxn|d[oó]lar|peso)/i.test(t)? t+" "+(data.moneda||"") : t)+" (total del viaje, sin vuelos)"; }
+  else delete data.presupuesto;
+  delete data.moneda;
   return data;
 }
 const LABELS={tipo:"Tipo de viaje",estilo:"Estilo",destino_en_mente:"Destino en mente",
