@@ -944,13 +944,11 @@ footer small{opacity:.8}
 
       <!-- PRESUPUESTO -->
       <div class="card block">
-        <div class="block-head"><span class="num">5</span><h3>Rango de presupuesto</h3><span class="opt">total del viaje</span></div>
-        <div class="row" style="margin-bottom:16px;grid-template-columns:1fr">
-          <input type="hidden" id="moneda" name="moneda" value="USD">
-          <div style="display:flex;align-items:flex-end"><p class="sub" style="margin:0 0 14px">Presupuesto <strong>total del viaje en dólares (USD)</strong>, para todos los que viajan.</p></div>
-        </div>
-        <div class="pick" id="budgetPick"></div>
-        <p class="sub" style="margin:12px 0 0">Es solo para darte opciones que te hagan sentido. Nunca te vamos a presionar.</p>
+        <div class="block-head"><span class="num">5</span><h3>Tu presupuesto</h3><span class="opt">total del viaje</span></div>
+        <input type="hidden" id="moneda" name="moneda" value="USD">
+        <label class="lbl" for="presupuesto">¿Cuánto te gustaría invertir en tu viaje? <span class="sub">(total en dólares, para todos los que viajan)</span></label>
+        <input type="text" id="presupuesto" name="presupuesto" inputmode="text" placeholder="Ej. $5,000 USD, o “aún no lo sé”">
+        <p class="sub" style="margin:10px 0 0">Es solo para darte opciones que te hagan sentido. Nunca te vamos a presionar.</p>
       </div>
 
       <!-- ALGO MÁS -->
@@ -1347,13 +1345,6 @@ $("#calClear").onclick=()=>{selStart=selEnd=null;drawCal()};
 drawCal();
 
 
-/* --- Presupuesto --- */
-function renderBudget(){
-  const cur=$("#moneda").value, prev=$('input[name="presupuesto"]:checked')?.dataset.i;
-  $("#budgetPick").innerHTML=BUDGETS[cur].map((b,i)=>`<input type="radio" name="presupuesto" value="${b}${b==="Aún no lo sé"?"":" "+cur}" id="b${i}" data-i="${i}"><label for="b${i}">${b}</label>`).join("");
-  if(prev!==undefined) $("#b"+prev).checked=true;
-}
-renderBudget();
 
 /* --- Resumen --- */
 function collect(){
@@ -1367,7 +1358,7 @@ function collect(){
   const edades=ek.map(k=>data[k]); ek.forEach(k=>delete data[k]);
   if(edades.length) data.edades_ninos=edades.join(", ");
   if(data.ninos==="0") delete data.ninos; if(data.mayores_65==="0") delete data.mayores_65;
-  if(data.presupuesto) data.presupuesto+=" (total del viaje)"; else delete data.moneda;
+  if(data.presupuesto && data.presupuesto.trim()) data.presupuesto=data.presupuesto.trim()+" (total del viaje)"; else { delete data.presupuesto; delete data.moneda; }
   return data;
 }
 const LABELS={tipo:"Tipo de viaje",estilo:"Estilo",destino_en_mente:"Destino en mente",
