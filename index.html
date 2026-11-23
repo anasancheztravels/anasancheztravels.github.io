@@ -1060,6 +1060,8 @@ const CONFIG = {
   // Correo donde te llegan las solicitudes (vía FormSubmit.co).
   // La PRIMERA vez que alguien envíe el formulario, FormSubmit te manda un correo para activarlo.
   EMAIL_DESTINO: "anasanchez.travels@gmail.com",
+  // Respaldo: cada cotización se guarda en la hoja "Cotizaciones de la página · Instante Travels" (Google Sheets)
+  SHEETS_URL: "",
   // WhatsApp con lada (sin + ni espacios)
   WHATSAPP: "528181725306"
 };
@@ -1409,7 +1411,14 @@ async function enviar(){
     method:"POST",keepalive:true,headers:{"Content-Type":"application/json",Accept:"application/json"},
     body:JSON.stringify({_subject:`✶ Nueva solicitud de cotización – ${data.nombre}`,_template:"table",_captcha:"false",...Object.fromEntries(Object.entries(data).map(([k,v])=>[LABELS[k]||k,v]))})
   }).catch(()=>{});
-  await Promise.race([envio,new Promise(r=>setTimeout(r,4000))]);
+  // Respaldo en Google Sheets (se guarda aunque falle el correo)
+  let respaldo=Promise.resolve();
+  if(CONFIG.SHEETS_URL){
+    const v=[`${data.adultos||0} adultos`]; if(+data.ninos) v.push(`${data.ninos} niños${data.edades_ninos?` (${data.edades_ninos})`:""}`); if(+data.mayores_65) v.push(`${data.mayores_65} mayores de 65`);
+    const fila={nombre:data.nombre||"",whatsapp:data.whatsapp||"",correo:data.correo||"",ciudad:data.ciudad_residencia||"",tipo:[].concat(data.tipo||[]).join(", "),viajeros:v.join(", "),salida:data.fecha_salida||"",regreso:data.fecha_regreso||"",presupuesto:data.presupuesto||"",comentarios:data.comentarios||"",detalle:summary(data,false)};
+    respaldo=fetch(CONFIG.SHEETS_URL,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(fila)}).catch(()=>{});
+  }
+  await Promise.race([Promise.all([envio,respaldo]),new Promise(r=>setTimeout(r,4000))]);
   gracias(data);
 }
 function gracias(data){
